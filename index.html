@@ -19,7 +19,7 @@
 <body style="background-color: whitesmoke;">
   <h1 id="hello" class="heading" style="color: red;">Hello World!</h1>
 
-  <pre id="ball" class="droppable">
+  <pre id="rabbit" class="droppable">
   |\   /|
    \|_|/
    /. .\
@@ -27,9 +27,10 @@
    {>o<}
   </pre>
 
+
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <div id="container" style="width: 700px; height: 700px; display: flex; align-items: center;">
-      <img style="max-width:50%; margin: auto;" src="https://instagram.fiev22-1.fna.fbcdn.net/v/t51.2885-15/e35/120897659_197127948463447_3750127333047493306_n.jpg?tp=1&_nc_ht=instagram.fiev22-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=0mCCWzMXrp4AX9Ew9OE&oh=9b704a9f041c03ca010d46c8a32e96bc&oe=607C7500" alt="">
+    <div id="container" style="width: 700px; height: 700px; display: flex; align-items: center; justify-content: center;">
+      <img style="max-width: 100%; width: 50%;" src="https://instagram.fiev22-1.fna.fbcdn.net/v/t51.2885-15/e35/120897659_197127948463447_3750127333047493306_n.jpg?tp=1&_nc_ht=instagram.fiev22-1.fna.fbcdn.net&_nc_cat=107&_nc_ohc=0mCCWzMXrp4AX9Ew9OE&oh=9b704a9f041c03ca010d46c8a32e96bc&oe=607C7500" alt="">
    </div>
     <div id="slider">
       <div id="thumb"></div>
@@ -37,8 +38,7 @@
   </div>
   
   <script>
-
-    console.log(container.querySelector('img').style.maxWidth)
+    let ow = container.querySelector('img').offsetWidth
     thumb.addEventListener('mousedown', function (event) {
       thumb.ondragstart = function () {
         return false
@@ -60,9 +60,17 @@
 
       function zoom (newX) {
         let img = container.querySelector('img')
-        let percent = newX/(slider.offsetWidth - thumb.offsetWidth) * 100
-        img.style.maxWidth = percent + '%'
-        console.log(img.offsetWidth)
+        // let percent = newX/(slider.offsetWidth - thumb.offsetWidth) * 100
+        // img.style.maxWidth = percent + '%'
+        let newWidth = newX
+        
+        if (newX < (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow - ((slider.offsetWidth - thumb.offsetWidth)/2 - newX)*2 + 'px'
+        } else if (newX > (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow + (newX - (slider.offsetWidth - thumb.offsetWidth)/2)*2 + 'px'
+        } else if (newX = (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow + 'px'
+        }
       }
 
 
@@ -86,6 +94,65 @@
 
 
     })
+
+    // для смартфона
+
+    thumb.addEventListener('touchstart', function (event) {
+      thumb.ondragstart = function () {
+        return false
+      }
+      event.preventDefault()
+      
+      let shiftX = event.clientX - thumb.getBoundingClientRect().left
+
+      function moveAt (clientX) {
+        let newX = clientX - slider.getBoundingClientRect().left - shiftX
+        if (newX < 0) {
+          newX = 0
+        } else if (newX > slider.offsetWidth - thumb.offsetWidth) {
+          newX = slider.offsetWidth - thumb.offsetWidth
+        }
+        thumb.style.left = newX + 'px'
+        zoom(newX)
+      }
+
+      function zoom (newX) {
+        let img = container.querySelector('img')
+        // let percent = newX/(slider.offsetWidth - thumb.offsetWidth) * 100
+        // img.style.maxWidth = percent + '%'
+        let newWidth = newX
+        
+        if (newX < (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow - ((slider.offsetWidth - thumb.offsetWidth)/2 - newX)*2 + 'px'
+        } else if (newX > (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow + (newX - (slider.offsetWidth - thumb.offsetWidth)/2)*2 + 'px'
+        } else if (newX = (slider.offsetWidth - thumb.offsetWidth)/2) {
+          img.style.width = ow + 'px'
+        }
+      }
+
+
+
+      moveAt(event.clientX)
+
+      function onMouseMove (event) {
+        moveAt(event.clientX)
+      }
+
+      document.addEventListener('touchmove', onMouseMove)
+      document.addEventListener('touchend', onMouseUp)
+
+      
+
+      function onMouseUp () {
+        document.removeEventListener('touchemove', onMouseMove)
+        document.removeEventListener('toucheend', onMouseUp)
+      }
+
+
+
+    })
+
 
   </script>
 

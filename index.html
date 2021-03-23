@@ -54,7 +54,6 @@
       if (parseInt(rabbit.style.marginLeft, 10) + rabbit.offsetWidth >= document.documentElement.offsetWidth) {
         rabbitAtTheLeft = false
         rabbitAtTheRight = true
-        console.log(step)
       }
     }, 1);
 
@@ -65,7 +64,6 @@
         if (step <= 0) {
           rabbitAtTheRight = false
           rabbitAtTheLeft = true
-          console.log(step)
         }
       }
     }, 1);
@@ -137,15 +135,16 @@
 
     })
 
-    // для смартфона
 
     thumb.addEventListener('touchstart', function (event) {
       thumb.ondragstart = function () {
         return false
       }
       event.preventDefault()
+
       
-      let shiftX = event.clientX - thumb.getBoundingClientRect().left
+      
+      let shiftX = event.touches[0].clientX - thumb.getBoundingClientRect().left
 
       function moveAt (clientX) {
         let newX = clientX - slider.getBoundingClientRect().left - shiftX
@@ -175,10 +174,10 @@
 
 
 
-      moveAt(event.clientX)
+      moveAt(event.touches[0].clientX)
 
       function onMouseMove (event) {
-        moveAt(event.clientX)
+        moveAt(event.touches[0].clientX)
       }
 
       document.addEventListener('touchmove', onMouseMove)
@@ -187,8 +186,8 @@
       
 
       function onMouseUp () {
-        document.removeEventListener('touchemove', onMouseMove)
-        document.removeEventListener('toucheend', onMouseUp)
+        document.removeEventListener('touchmove', onMouseMove)
+        document.removeEventListener('touchend', onMouseUp)
       }
 
 

@@ -29,3 +29,10 @@ html, body {
   background: blue;
   cursor: pointer;
 }
+@media (max-width: 575px){
+  #thumb {
+    width: 15px;
+    height: 30px;
+    top: -7.5px;
+  }
+}

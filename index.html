@@ -13,7 +13,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js"></script><!-- добавим chai -->
   <script>let assert = chai.assert;</script>
   <!-- chai предоставляет большое количество функций. Объявим assert глобально -->
-  <title>Машик</title>
+  <title>Машик&#9829;</title>
 </head>
 
 <body style="background-color: whitesmoke;">
@@ -26,6 +26,9 @@
   =\_Y_/=
    {>o<}
   </pre>
+  <button style="display: block; margin: 0 auto;" onclick="alert('Цём в щёчку :*')">
+    Если с компа нажми букву "Ц", либо просто на меня
+  </button>
 
 
   <div style="display: flex; flex-direction: column; align-items: center;">
@@ -38,7 +41,29 @@
   </div>
   
   <script>
+    //Kiss
+    function runOnKeys (func, ...codes) {
+      let pressed = new Set
 
+      document.addEventListener('keydown', function (event) {
+        pressed.add(event.code)
+        for (let code of codes) {
+          if (!pressed.has(code)) {
+            return
+          }
+        }
+        func()
+        pressed.clear()
+      })
+
+      document.addEventListener('keyup', function (event) {
+        pressed.delete(event.code)
+      })
+    }
+
+    runOnKeys(() => alert('Цём в щёчку :*'), 'KeyW')
+
+    // Running Rabit
     let step = 0
     let rabbitAtTheRight = false
     let rabbitAtTheLeft = true
@@ -68,16 +93,7 @@
       }
     }, 1);
 
-
-
-
-
-
-
-
-
-
-
+    //Zoom for PC
     let ow = container.querySelector('img').offsetWidth
     thumb.addEventListener('mousedown', function (event) {
       thumb.ondragstart = function () {
@@ -135,7 +151,7 @@
 
     })
 
-
+    //Zoom for touchpad
     thumb.addEventListener('touchstart', function (event) {
       thumb.ondragstart = function () {
         return false
